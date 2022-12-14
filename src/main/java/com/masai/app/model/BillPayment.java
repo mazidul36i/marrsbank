@@ -24,4 +24,6 @@ public class BillPayment {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Wallet wallet;
 	
+	
+	
 }
