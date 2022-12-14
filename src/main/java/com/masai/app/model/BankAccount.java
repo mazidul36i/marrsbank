@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,9 +22,13 @@ public class BankAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer accountNo;
+	
 	private String ifscCode;
 	private String bankName;
 	private Long balance;
+	
+	
+	@JsonIgnore
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Wallet wallet; 
