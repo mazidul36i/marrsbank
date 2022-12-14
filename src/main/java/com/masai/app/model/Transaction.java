@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,10 +25,11 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer transactionId;
 	private String transactionType;
-	private LocalDate transactionDate;
+	private LocalDate transactionDate = LocalDate.now();
 	private Double amount;
 	private String description;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Wallet wallet;
 
