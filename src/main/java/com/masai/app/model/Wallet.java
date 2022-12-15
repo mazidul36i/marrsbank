@@ -1,6 +1,8 @@
 package com.masai.app.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,14 +32,14 @@ public class Wallet {
 	private Customer customer;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
-	private Set<BankAccount> bankAccounts = new HashSet<>();
+	private List<BankAccount> bankAccounts = new ArrayList<>();
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
-	private Set<Transaction> transactions = new HashSet<>();
+	private List<Transaction> transactions = new ArrayList<>();
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
-	private Set<BillPayment> billPayments = new HashSet<>();
+	private List<BillPayment> billPayments = new ArrayList<>();
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
-	private Set<BeneficiaryDetails> beneficiaryDetails = new HashSet<>();
+	private List<BeneficiaryDetails> beneficiaryDetails = new ArrayList<>();
 }
