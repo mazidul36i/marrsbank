@@ -40,14 +40,13 @@ public class BankAccountServiceImpl implements BankAccountService {
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNo() == bank.getAccountNo()) {
 				BankAccount account = accounts.remove(i);
-//    			bDao.delete(account);
-
 			}
 		}
 		wallet.setBankAccounts(accounts);
-		// bDao.saveAll(accounts);
 
-		walletDao.save(wallet);
+		bank.setWallet(null);
+
+		bDao.delete(bank);
 
 		return wallet;
 
