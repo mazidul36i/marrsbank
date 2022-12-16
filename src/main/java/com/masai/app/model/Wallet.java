@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,13 +34,13 @@ public class Wallet {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
 	private List<BankAccount> bankAccounts = new ArrayList<>();
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
 	private List<Transaction> transactions = new ArrayList<>();
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
 	private List<BillPayment> billPayments = new ArrayList<>();
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
 	private List<BeneficiaryDetails> beneficiaryDetails = new ArrayList<>();
 }
