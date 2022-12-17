@@ -25,37 +25,37 @@ public class BeneficiaryController {
 	@Autowired
 	private BeneficiaryService beneficiaryService;
 
-	@PostMapping("/{walletId}")
+	@PostMapping("/{uuid}")
 	public ResponseEntity<BeneficiaryDetails> addBeneneficiaryMapping(@RequestBody BeneficiaryDetails beneficiary,
-			@PathVariable("walletId") Integer walletId) throws BeneficiaryException {
+			@PathVariable("uuid") String uuid) throws BeneficiaryException {
 
-		BeneficiaryDetails beneficiary2 = beneficiaryService.addBeneficiary(beneficiary, walletId);
+		BeneficiaryDetails beneficiary2 = beneficiaryService.addBeneficiary(beneficiary, uuid);
 		return new ResponseEntity<BeneficiaryDetails>(beneficiary2, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/{walletId}")
+	@DeleteMapping("/{uuid}")
 	public ResponseEntity<BeneficiaryDetails> deleteBeneneficiaryMapping(
-			@RequestParam("mobileNumber") String mobileNumber, @PathVariable("walletId") Integer walletId)
+			@RequestParam("mobileNumber") String mobileNumber, @PathVariable("uuid") String uuid)
 			throws BeneficiaryException {
 
-		BeneficiaryDetails beneficiary = beneficiaryService.deleteBeneficiary(walletId, mobileNumber);
+		BeneficiaryDetails beneficiary = beneficiaryService.deleteBeneficiary(uuid, mobileNumber);
 		return new ResponseEntity<BeneficiaryDetails>(beneficiary, HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/bymobile/{mobileNumber}")
-	public ResponseEntity<BeneficiaryDetails> viewBeneficiaryMapping(@PathVariable("mobileNumber") String mobileNumber)
+	@GetMapping("/{uuid}/{mobileNumber}")
+	public ResponseEntity<BeneficiaryDetails> viewBeneficiaryMapping(@PathVariable("mobileNumber") String mobileNumber, @PathVariable("uuid") String uuid)
 			throws BeneficiaryException {
 
-		BeneficiaryDetails beneficiary = beneficiaryService.viewBeneficiary(mobileNumber);
+		BeneficiaryDetails beneficiary = beneficiaryService.viewBeneficiary(mobileNumber, uuid);
 		return new ResponseEntity<BeneficiaryDetails>(beneficiary, HttpStatus.OK);
 
 	}
 
-	@GetMapping("/{walletId}")
+	@GetMapping("/{uuid}")
 	public ResponseEntity<List<BeneficiaryDetails>> viewAllBeneficiaryMapping(
-			@PathVariable("walletId") Integer walletId) throws BeneficiaryException {
+			@PathVariable("uuid") String uuid) throws BeneficiaryException {
 
-		List<BeneficiaryDetails> beneficiary = beneficiaryService.viewAllBeneficiary(walletId);
+		List<BeneficiaryDetails> beneficiary = beneficiaryService.viewAllBeneficiary(uuid);
 		return new ResponseEntity<>(beneficiary, HttpStatus.OK);
 	}
 

@@ -20,13 +20,13 @@ import lombok.NoArgsConstructor;
 public class BankAccount {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer accountNo;
+	private String accountNo;
 	private String ifscCode;
 	private String bankName;
 	private Long balance;
+
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
-	private Wallet wallet; 
-	
+	private Wallet wallet;
+
 }

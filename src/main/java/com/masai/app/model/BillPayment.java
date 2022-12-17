@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +26,10 @@ public class BillPayment {
 	private Integer billId;
 	private String billType;
 	private Double amount;
-	private LocalDate paymentDate;
-	
+	private LocalDate paymentDate = LocalDate.now();
+
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Wallet wallet;
-	
-	
-	
+
 }
