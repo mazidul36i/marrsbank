@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.masai.app.exceptions.AccountException;
-import com.masai.app.exceptions.TransactionException;
 import com.masai.app.exceptions.WalletException;
 import com.masai.app.model.BankAccount;
 import com.masai.app.model.Wallet;

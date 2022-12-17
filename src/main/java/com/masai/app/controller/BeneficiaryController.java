@@ -2,8 +2,6 @@ package com.masai.app.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,62 +15,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.masai.app.exceptions.BeneficiaryException;
-import com.masai.app.model.BankAccount;
-import com.masai.app.model.Beneficiary;
+import com.masai.app.model.BeneficiaryDetails;
 import com.masai.app.service.BeneficiaryService;
 
-
-
-
-
 @RestController
-@RequestMapping("/beneficiary")
+@RequestMapping("/beneficiaries")
 public class BeneficiaryController {
-	
-	
+
 	@Autowired
 	private BeneficiaryService beneficiaryService;
-	
-	
-	@PostMapping("/beneficiaries/{walletId}")
-	public ResponseEntity<Beneficiary> addBeneneficiaryMapping(@RequestBody Beneficiary beneficiary ,@PathVariable ("walletId") Integer walletId) throws BeneficiaryException{
 
-		Beneficiary beneficiary2 = beneficiaryService.addBeneficiary(beneficiary, walletId);
-		return new ResponseEntity<Beneficiary>(beneficiary2 ,HttpStatus.ACCEPTED);
+	@PostMapping("/{walletId}")
+	public ResponseEntity<BeneficiaryDetails> addBeneneficiaryMapping(@RequestBody BeneficiaryDetails beneficiary,
+			@PathVariable("walletId") Integer walletId) throws BeneficiaryException {
+
+		BeneficiaryDetails beneficiary2 = beneficiaryService.addBeneficiary(beneficiary, walletId);
+		return new ResponseEntity<BeneficiaryDetails>(beneficiary2, HttpStatus.CREATED);
+	}
+
+	@DeleteMapping("/{walletId}")
+	public ResponseEntity<BeneficiaryDetails> deleteBeneneficiaryMapping(
+			@RequestParam("mobileNumber") String mobileNumber, @PathVariable("walletId") Integer walletId)
+			throws BeneficiaryException {
+
+		BeneficiaryDetails beneficiary = beneficiaryService.deleteBeneficiary(walletId, mobileNumber);
+		return new ResponseEntity<BeneficiaryDetails>(beneficiary, HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/bymobile/{mobileNumber}")
+	public ResponseEntity<BeneficiaryDetails> viewBeneficiaryMapping(@PathVariable("mobileNumber") String mobileNumber)
+			throws BeneficiaryException {
+
+		BeneficiaryDetails beneficiary = beneficiaryService.viewBeneficiary(mobileNumber);
+		return new ResponseEntity<BeneficiaryDetails>(beneficiary, HttpStatus.OK);
 
 	}
-	
-	
-	
-	@DeleteMapping("/beneficiaries/{walletId}")
-	public ResponseEntity<Beneficiary> deleteBeneneficiaryMapping( @RequestParam("mobileNumber") String mobileNumber,@PathVariable ("walletId") Integer walletId) throws BeneficiaryException{
-		
-		return new ResponseEntity<Beneficiary>(beneficiaryService.deleteBeneficiary(walletId, mobileNumber),HttpStatus.OK);
-		
-		
+
+	@GetMapping("/{walletId}")
+	public ResponseEntity<List<BeneficiaryDetails>> viewAllBeneficiaryMapping(
+			@PathVariable("walletId") Integer walletId) throws BeneficiaryException {
+
+		List<BeneficiaryDetails> beneficiary = beneficiaryService.viewAllBeneficiary(walletId);
+		return new ResponseEntity<>(beneficiary, HttpStatus.OK);
 	}
-	
-	
-	@GetMapping("/beneficiaries/{mobileNumber}")
-	public ResponseEntity<Beneficiary> viewBeneficiaryMapping(@PathVariable("mobileNumber")String mobileNumber) throws BeneficiaryException {
-
-		Beneficiary beneficiary = beneficiaryService.viewBeneficiary(mobileNumber);
-		
-		return new ResponseEntity<Beneficiary>(beneficiary, HttpStatus.ACCEPTED);
-
-	}
-	
-	@GetMapping("/beneficiaries/{customerId}")
-	public ResponseEntity<List<Beneficiary>> viewAllBeneficiaryMapping(@PathVariable("customerId")Integer customerId) throws BeneficiaryException {
-
-		List<Beneficiary> beneficiary = beneficiaryService.viewAllBeneficiary(customerId);
-		
-		return new ResponseEntity<>(beneficiary, HttpStatus.ACCEPTED);
-
-	}
-	
-	
-	
-	
 
 }

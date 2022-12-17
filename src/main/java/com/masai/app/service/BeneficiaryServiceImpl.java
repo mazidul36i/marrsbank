@@ -6,18 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.masai.app.exceptions.AccountException;
 import com.masai.app.exceptions.BeneficiaryException;
-import com.masai.app.exceptions.CustomerException;
 import com.masai.app.exceptions.WalletException;
-import com.masai.app.model.BankAccount;
-import com.masai.app.model.Beneficiary;
-import com.masai.app.model.CurrentUserSession;
-import com.masai.app.model.Customer;
+import com.masai.app.model.BeneficiaryDetails;
 import com.masai.app.model.Wallet;
 import com.masai.app.repository.BeneficiaryDao;
 import com.masai.app.repository.CustomerDao;
-import com.masai.app.repository.SessionDao;
 import com.masai.app.repository.WalletDao;
 
 @Service
@@ -27,98 +21,69 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	private BeneficiaryDao beneficiaryDao;
 
 	@Autowired
-	private SessionDao sessionDao;
-
-	@Autowired
 	private WalletDao walletDao;
 
 	@Autowired
 	CustomerDao customerDao;
 
 	@Override
-	public Beneficiary addBeneficiary(Beneficiary beneficiary, Integer walletId) throws BeneficiaryException {
-		
-		Wallet wallet = walletDao.findById(walletId).orElseThrow(() -> new WalletException("wallet not found"));
-		
-		beneficiary.setWallet(wallet);
+	public BeneficiaryDetails addBeneficiary(BeneficiaryDetails beneficiary, Integer walletId)
+			throws WalletException, BeneficiaryException {
 
-		Optional<Beneficiary> optional = beneficiaryDao.findById(beneficiary.getMobileNumber());
+		Wallet wallet = walletDao.findById(walletId)
+				.orElseThrow(() -> new WalletException("Wallet doesn't not found!"));
+		Optional<BeneficiaryDetails> optional = beneficiaryDao.findById(beneficiary.getMobileNumber());
+
+		beneficiary.setWallet(wallet);
 
 		if (optional.isEmpty()) {
 			return beneficiaryDao.save(beneficiary);
 		} else {
-			throw new BeneficiaryException("Beneficiary Exist");
+			throw new BeneficiaryException("Beneficiary already exists!");
 		}
 	}
 
 	@Override
-	public Beneficiary deleteBeneficiary(Integer walletId, String mobileNumber) throws BeneficiaryException {
+	public BeneficiaryDetails deleteBeneficiary(Integer walletId, String mobileNumber)
+			throws WalletException, BeneficiaryException {
 
-		Wallet wallet = walletDao.findById(walletId).orElseThrow(() -> new WalletException("wallet not found"));
-		List<Beneficiary> beneficiary = wallet.getBeneficiary();
-		Beneficiary bene = null;
+		Wallet wallet = walletDao.findById(walletId).orElseThrow(() -> new WalletException("Wallet doesn't found!"));
+		List<BeneficiaryDetails> beneficiaries = wallet.getBeneficiaryDetails();
+		BeneficiaryDetails beneficiary = null;
 
-		for (int i = 0; i < beneficiary.size(); i++) {
-			if (beneficiary.get(i).getMobileNumber().equals(mobileNumber)) {
-				bene = beneficiary.remove(i);
+		for (int i = 0; i < beneficiaries.size(); i++) {
+			if (beneficiaries.get(i).getMobileNumber().equals(mobileNumber)) {
+				beneficiary = beneficiaries.remove(i);
 			}
 		}
-		wallet.setBeneficiary(beneficiary);
+		
+		if (beneficiary == null) throw new BeneficiaryException("No beneficiary exists with mobile number: " + mobileNumber);
 
-		bene.setWallet(null);
-
-		beneficiaryDao.delete(bene);
-
-		return bene;
-
+		wallet.setBeneficiaryDetails(beneficiaries);
+		beneficiary.setWallet(null);
+		
+		beneficiaryDao.delete(beneficiary);
+		return beneficiary;
 	}
 
 	@Override
-	public Beneficiary viewBeneficiary(String mobileNumber) throws BeneficiaryException {
-		
-		
-		Beneficiary bene = beneficiaryDao.findByMobileNumber(mobileNumber);
-				
-				if(bene == null) new BeneficiaryException("Beneficiary doesn't not found");
-
-		return bene;
-		
-		
+	public BeneficiaryDetails viewBeneficiary(String mobileNumber) throws BeneficiaryException {
+		BeneficiaryDetails beneficiary = beneficiaryDao.findById(mobileNumber)
+				.orElseThrow(() -> new BeneficiaryException("Beneficiary doesn't not found with mobile number: " + mobileNumber));
+		return beneficiary;
 	}
-	
-	
-	
-	
-
-
 
 	@Override
-	public List<Beneficiary> viewAllBeneficiary(Integer customerId) throws BeneficiaryException {
-		
-		
-		
-		Customer cust = customerDao.findById(customerId).get();
-		if(cust!= null) {
-			List<Beneficiary> list = cust.getWallet().getBeneficiary();
-			if(list.size()>0) {
-				return list;
-				
-			}else{
-				 throw new BeneficiaryException("No beneficiary found");
-				 
-			}
-		}else {
-			throw new BeneficiaryException("Customer not found with id "+ customerId);
+	public List<BeneficiaryDetails> viewAllBeneficiary(Integer walletId) throws WalletException, BeneficiaryException {
+
+		Wallet wallet = walletDao.findById(walletId).orElseThrow(() -> new WalletException("Wallet doesn't found!"));
+
+		if (wallet.getBeneficiaryDetails() == null || wallet.getBeneficiaryDetails().size() == 0) {
+			throw new WalletException("No beneficiary found to be load!");
+		} else {
+			return wallet.getBeneficiaryDetails();
 		}
-		
-		
-		
-	
-	}
 
-	
-	
-	
-	
+	}
 
 }

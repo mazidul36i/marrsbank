@@ -2,44 +2,18 @@ package com.masai.app.exceptions;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class MyErrorDetails {
-	
-	
+
 	private LocalDateTime timestamp;
-	private String messege;
+	private String message;
 	private String details;
-	
-	
-	
-	public MyErrorDetails() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public MyErrorDetails(LocalDateTime timestamp, String messege, String details) {
-		super();
-		this.timestamp = timestamp;
-		this.messege = messege;
-		this.details = details;
-	}
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
-	public String getMessege() {
-		return messege;
-	}
-	public void setMessege(String messege) {
-		this.messege = messege;
-	}
-	public String getDetails() {
-		return details;
-	}
-	public void setDetails(String details) {
-		this.details = details;
-	}
-	
-	
 
 }

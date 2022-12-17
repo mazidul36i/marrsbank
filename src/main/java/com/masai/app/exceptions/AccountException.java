@@ -1,14 +1,13 @@
 package com.masai.app.exceptions;
 
-public class AccountException extends RuntimeException {
-	
-	public AccountException () {
-		
+public class AccountException extends MarrsBankException {
+
+	public AccountException() {
+
 	}
-	
-public AccountException (String message) {
+
+	public AccountException(String message) {
 		super(message);
-	} 
-	
+	}
 
 }

@@ -17,12 +17,14 @@ public class LoginController {
 
 	@Autowired
 	private LoginService cuLogin;
+
 	@PostMapping("/login")
-	public ResponseEntity<String> loginCustomer(@RequestBody LoginDTO dto) throws LoginException{
-		return new ResponseEntity<String>(cuLogin.LoginIntoAccount(dto),HttpStatus.OK);
+	public ResponseEntity<String> loginCustomer(@RequestBody LoginDTO dto) throws LoginException {
+		return new ResponseEntity<String>(cuLogin.LoginIntoAccount(dto), HttpStatus.OK);
 	}
+
 	@PostMapping("/logout")
-	public ResponseEntity<String> logoutCustomer(@RequestParam(required = false) String key) throws LoginException{
-		return new ResponseEntity<String>(cuLogin.LogoutFromAccount(key),HttpStatus.OK);
+	public ResponseEntity<String> logoutCustomer(@RequestParam(required = false) String key) throws LoginException {
+		return new ResponseEntity<String>(cuLogin.LogoutFromAccount(key), HttpStatus.OK);
 	}
 }

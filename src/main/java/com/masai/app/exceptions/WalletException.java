@@ -1,6 +1,6 @@
 package com.masai.app.exceptions;
 
-public class WalletException extends RuntimeException {
+public class WalletException extends MarrsBankException {
 
 	public WalletException() {
 		super();

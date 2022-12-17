@@ -1,6 +1,6 @@
 package com.masai.app.exceptions;
 
-public class TransactionException extends RuntimeException {
+public class TransactionException extends MarrsBankException {
 
 	public TransactionException() {
 		super();
