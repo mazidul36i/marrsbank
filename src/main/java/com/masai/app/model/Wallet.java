@@ -11,8 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +30,9 @@ public class Wallet {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer walletId;
-	private Long balance;
+	private Double balance;
 
+//	@JoinColumn(name = "wallet_id")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "wallet")
 	private Customer customer;
 

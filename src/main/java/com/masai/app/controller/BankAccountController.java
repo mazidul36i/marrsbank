@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.masai.app.model.BankAccount;
@@ -17,42 +18,41 @@ import com.masai.app.model.Wallet;
 import com.masai.app.service.BankAccountService;
 
 @RestController
+@RequestMapping("/bankaccounts")
 public class BankAccountController {
 
 	@Autowired
 	private BankAccountService bankAccountService;
 
-	@PostMapping("/bankaccounts/{id}")
-	public ResponseEntity<Wallet> addBankAccount(@RequestBody BankAccount bank, @PathVariable("id") Integer walletId) {
+	@PostMapping("/{uuid}")
+	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bank,
+			@PathVariable("uuid") String uuid) {
 
-		Wallet wallet = bankAccountService.addAccount(bank, walletId);
-		return new ResponseEntity<Wallet>(wallet, HttpStatus.CREATED);
-
+		BankAccount account = bankAccountService.addAccount(bank, uuid);
+		return new ResponseEntity<BankAccount>(account, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/bankaccounts/{walletId}")
-	public ResponseEntity<Wallet> deleteByBankAccount(@RequestBody BankAccount bank,
-			@PathVariable("walletId") Integer id) {
+	@DeleteMapping("/{uuid}/{accNo}")
+	public ResponseEntity<Wallet> deleteByBankAccount(@PathVariable("accNo") String accNo,
+			@PathVariable("uuid") String uuid) {
 
-		Wallet wallet = bankAccountService.deleteAccount(bank, id);
-		return new ResponseEntity<Wallet>(wallet, HttpStatus.CREATED);
-
+		Wallet wallet = bankAccountService.deleteAccount(accNo, uuid);
+		return new ResponseEntity<Wallet>(wallet, HttpStatus.OK);
 	}
 
-	@GetMapping("/bankaccounts/{walletId}")
-	public ResponseEntity<List<BankAccount>> viewAllBankAccount(@PathVariable("walletId") Integer id) {
+	@GetMapping("/{uuid}")
+	public ResponseEntity<List<BankAccount>> viewAllBankAccount(@PathVariable("uuid") String uuid) {
 
-		List<BankAccount> accounts = bankAccountService.viewBankAccount(id);
-		return new ResponseEntity<List<BankAccount>>(accounts, HttpStatus.CREATED);
-
+		List<BankAccount> accounts = bankAccountService.viewBankAccount(uuid);
+		return new ResponseEntity<List<BankAccount>>(accounts, HttpStatus.OK);
 	}
 
-	@GetMapping("/bankaccountbyaccno/{accNo}")
-	public ResponseEntity<BankAccount> viewBankAccountByAccountNo(@PathVariable("accNo") Integer accountNo) {
+	@GetMapping("/{uuid}/{accNo}")
+	public ResponseEntity<BankAccount> viewBankAccountByAccountNo(@PathVariable("accNo") String accountNo,
+			@PathVariable("uuid") String uuid) {
 
-		BankAccount account = bankAccountService.viewBankAccountByAccounNo(accountNo);
-		return new ResponseEntity<BankAccount>(account, HttpStatus.ACCEPTED);
-
+		BankAccount account = bankAccountService.viewBankAccountByAccounNo(accountNo, uuid);
+		return new ResponseEntity<BankAccount>(account, HttpStatus.OK);
 	}
 
 }

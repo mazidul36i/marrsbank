@@ -8,14 +8,14 @@ import com.masai.app.model.BeneficiaryDetails;
 
 public interface BeneficiaryService {
 
-	public BeneficiaryDetails addBeneficiary(BeneficiaryDetails beneficiary, Integer walletId)
+	public BeneficiaryDetails addBeneficiary(BeneficiaryDetails beneficiary, String uuid)
 			throws WalletException, BeneficiaryException;
 
-	public BeneficiaryDetails deleteBeneficiary(Integer walletId, String mobileNumber)
+	public BeneficiaryDetails deleteBeneficiary(String uuid, String mobileNumber)
 			throws WalletException, BeneficiaryException;
 
-	public BeneficiaryDetails viewBeneficiary(String mobileNumber) throws BeneficiaryException;
+	public BeneficiaryDetails viewBeneficiary(String uuid, String mobileNumber) throws BeneficiaryException;
 
-	public List<BeneficiaryDetails> viewAllBeneficiary(Integer customerId) throws WalletException, BeneficiaryException;
+	public List<BeneficiaryDetails> viewAllBeneficiary(String uuid) throws WalletException, BeneficiaryException;
 
 }

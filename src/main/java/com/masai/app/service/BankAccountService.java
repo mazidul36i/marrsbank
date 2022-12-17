@@ -9,12 +9,12 @@ import com.masai.app.model.Wallet;
 
 public interface BankAccountService {
 
-	public Wallet addAccount(BankAccount bank, Integer walletId) throws WalletException, AccountException;
+	public BankAccount addAccount(BankAccount bank, String uuid) throws WalletException, AccountException;
 
-	public Wallet deleteAccount(BankAccount bank, Integer walletId) throws WalletException, AccountException;
+	public Wallet deleteAccount(String accNo, String uuid) throws WalletException, AccountException;
 
-	public BankAccount viewBankAccountByAccounNo(Integer accNo) throws WalletException, AccountException;
+	public BankAccount viewBankAccountByAccounNo(String accNo, String uuid) throws WalletException, AccountException;
 
-	public List<BankAccount> viewBankAccount(Integer walletId) throws WalletException, AccountException;
+	public List<BankAccount> viewBankAccount(String uuid) throws WalletException, AccountException;
 
 }

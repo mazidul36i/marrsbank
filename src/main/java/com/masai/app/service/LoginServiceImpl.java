@@ -1,7 +1,8 @@
 package com.masai.app.service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,10 @@ import com.masai.app.model.LoginDTO;
 import com.masai.app.repository.CustomerDao;
 import com.masai.app.repository.SessionDao;
 
-import net.bytebuddy.utility.RandomString;
-
 @Service
 public class LoginServiceImpl implements LoginService {
 
+	// Autowire daos'
 	@Autowired
 	private CustomerDao cDao;
 
@@ -25,37 +25,58 @@ public class LoginServiceImpl implements LoginService {
 	private SessionDao sDao;
 
 	@Override
-	public String LoginIntoAccount(LoginDTO dto) throws LoginException {
-		// TODO Auto-generated method stub
-		Customer exist = cDao.findByMobileNumber(dto.getMobileNo());
+	public CurrentUserSession LoginIntoAccount(LoginDTO dto) throws LoginException {
+
+		// Check if the user exists or not
+		Customer exist = cDao.findByMobileNumber(dto.getMobileNumber());
 		if (exist == null) {
-			throw new LoginException("Please Enter A Valid Mobile Number");
-		}
-		Optional<CurrentUserSession> validCustomer = sDao.findById(exist.getCustomerId());
-		if (validCustomer.isPresent()) {
-			throw new LoginException("User Alredy Login With That Mobile Number !");
-		}
-		if (exist.getPassword().equals(dto.getPassword())) {
-			String Key = RandomString.make(6);
-			CurrentUserSession cus = new CurrentUserSession(exist.getCustomerId(), Key, LocalDateTime.now());
-			sDao.save(cus);
-			return cus.toString();
-		} else {
-			throw new LoginException("Please Enter A Valid Password !");
+			throw new LoginException("Please enter a valid mobile number!");
 		}
 
+		// Validate password
+		if (exist.getPassword().equals(dto.getPassword())) {
+			String uuid = UUID.randomUUID().toString();
+			CurrentUserSession cus = new CurrentUserSession(uuid, exist.getCustomerId(), LocalDateTime.now());
+			sDao.save(cus);
+			return cus;
+		} else {
+			// Throw exception on invalid password
+			throw new LoginException("Please enter a valid password!");
+		}
 	}
 
 	@Override
 	public String LogoutFromAccount(String key) throws LoginException {
-		// TODO Auto-generated method stub
+		// Validate token
 		CurrentUserSession cus = sDao.findByUuid(key);
 		if (cus == null) {
-			throw new LoginException("User Not Login With this Number !");
+			throw new LoginException("Invalid operation!");
 		}
-		sDao.delete(cus);
-		return "Logged Out !";
 
+		// Log out
+		sDao.delete(cus);
+		return "Logged Out!";
+	}
+
+	@Override
+	public String LogoutFromAllAccounts(String key) throws LoginException {
+		// Validate current user token
+		CurrentUserSession cus = sDao.findByUuid(key);
+		if (cus == null) {
+			throw new LoginException("Access denied!");
+		}
+
+		// Get list of current sessions running on the account
+		List<CurrentUserSession> sessions = sDao.findByUserId(cus.getUserId());
+
+		// Remove all except the current user
+		for (CurrentUserSession session : sessions) {
+			if (session.getUuid() != cus.getUuid())
+				sDao.delete(session);
+		}
+
+		// Return success message
+		return "Logged out from all devices!";
 	}
 
 }
