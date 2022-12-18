@@ -71,7 +71,7 @@ public class WalletServiceImpl implements WalletService {
 		transaction.setTransactionType("Mobile transfar");
 
 		// Save the transaction record
-		transactionService.addTransaction(transaction, customer.getWallet().getWalletId());
+		transactionService.addTransaction(transaction, uuid);
 
 		// Return success message
 		return "Transaction successfull!";

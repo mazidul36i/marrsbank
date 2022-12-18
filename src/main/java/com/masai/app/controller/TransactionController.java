@@ -22,30 +22,35 @@ public class TransactionController {
 	@Autowired
 	private TransactionService transactionService;
 
-	@PostMapping("/transactions/{walletId}")
-	public ResponseEntity<Transaction> addTransactionHandler(@RequestBody Transaction transaction,
-			@PathVariable("walletId") Integer walletId) {
-		Transaction savedTransaction = transactionService.addTransaction(transaction, walletId);
-		return new ResponseEntity<Transaction>(savedTransaction, HttpStatus.CREATED);
-	}
+	/*
+	 * It's automated when a transaction made on any wallet
+	 * 
+	 * @PostMapping("/transactions/{uuid}") public ResponseEntity<Transaction>
+	 * addTransactionHandler(@RequestBody Transaction transaction,
+	 * 
+	 * @PathVariable("uuid") String uuid) { Transaction savedTransaction =
+	 * transactionService.addTransaction(transaction, uuid); return new
+	 * ResponseEntity<Transaction>(savedTransaction, HttpStatus.CREATED); }
+	 */
 
-	@GetMapping("/transactions/{walletId}")
-	public ResponseEntity<List<Transaction>> viewAllTransactionsHandler(@PathVariable("walletId") Integer walletId) {
-		List<Transaction> transactions = transactionService.viewAllTransactions(walletId);
+	@GetMapping("/transactions/{uuid}")
+	public ResponseEntity<List<Transaction>> viewAllTransactionsHandler(@PathVariable("uuid") String uuid) {
+		List<Transaction> transactions = transactionService.viewAllTransactions(uuid);
 		return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
 	}
 
-	@GetMapping("/transactions/{walletId}/bydate")
+	@GetMapping("/transactions/{uuid}/bydate")
 	public ResponseEntity<List<Transaction>> viewTransactionsByDateHandler(@RequestParam("from") String from,
-			@RequestParam("to") String to, @PathVariable("walletId") Integer walletId) {
-		List<Transaction> transactions = transactionService.viewTransactionsByDate(LocalDate.parse(from), LocalDate.parse(to), walletId);
+			@RequestParam("to") String to, @PathVariable("uuid") String uuid) {
+		List<Transaction> transactions = transactionService.viewTransactionsByDate(LocalDate.parse(from),
+				LocalDate.parse(to), uuid);
 		return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
 	}
 
-	@GetMapping("/transactions/{walletId}/{type}")
+	@GetMapping("/transactions/{uuid}/{type}")
 	public ResponseEntity<List<Transaction>> viewTransactionsByTypeHandler(@PathVariable("type") String type,
-			@PathVariable("walletId") Integer walletId) {
-		List<Transaction> transactions = transactionService.viewAllTransactionsByType(type, walletId);
+			@PathVariable("uuid") String uuid) {
+		List<Transaction> transactions = transactionService.viewAllTransactionsByType(type, uuid);
 		return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
 	}
 }
