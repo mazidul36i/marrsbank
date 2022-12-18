@@ -20,12 +20,17 @@ public class LoginController {
 	private LoginService cuLogin;
 
 	@PostMapping("/login")
-	public ResponseEntity<CurrentUserSession> loginCustomer(@RequestBody LoginDTO dto) throws LoginException {
+	public ResponseEntity<CurrentUserSession> loginCustomerHandler(@RequestBody LoginDTO dto) throws LoginException {
 		return new ResponseEntity<CurrentUserSession>(cuLogin.LoginIntoAccount(dto), HttpStatus.OK);
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<String> logoutCustomer(@RequestParam("token") String key) throws LoginException {
+	public ResponseEntity<String> logoutCustomerHandler(@RequestParam("token") String key) throws LoginException {
+		return new ResponseEntity<String>(cuLogin.LogoutFromAccount(key), HttpStatus.OK);
+	}
+	
+	@PostMapping("/logoutfromall")
+	public ResponseEntity<String> logoutFromAllDevicesHandler(@RequestParam("token") String key) throws LoginException {
 		return new ResponseEntity<String>(cuLogin.LogoutFromAccount(key), HttpStatus.OK);
 	}
 }

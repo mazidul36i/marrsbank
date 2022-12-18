@@ -32,8 +32,8 @@ public class BankAccountController {
 		return new ResponseEntity<BankAccount>(account, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/{uuid}/{accNo}")
-	public ResponseEntity<Wallet> deleteByBankAccount(@PathVariable("accNo") String accNo,
+	@DeleteMapping("/{uuid}/{accountNumber}")
+	public ResponseEntity<Wallet> deleteByBankAccount(@PathVariable("accountNumber") String accNo,
 			@PathVariable("uuid") String uuid) {
 
 		Wallet wallet = bankAccountService.deleteAccount(accNo, uuid);

@@ -44,7 +44,7 @@ public class BillPaymentServiceImpl implements BillPaymentService {
 			transaction.setTransactionType(payment.getBillType());
 
 			// Save the transaction record
-			transactionService.addTransaction(transaction, customer.getWallet().getWalletId());
+			transactionService.addTransaction(transaction, uuid);
 
 			return billDao.save(payment);
 		} else {

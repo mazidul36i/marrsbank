@@ -11,14 +11,14 @@ import com.masai.app.model.Wallet;
 
 public interface TransactionService {
 
-	public Transaction addTransaction(Transaction transaction, Integer walletId)
+	public Transaction addTransaction(Transaction transaction, String uuid)
 			throws TransactionException, WalletException;
 
-	public List<Transaction> viewAllTransactions(Integer walletId) throws WalletException, TransactionException;
+	public List<Transaction> viewAllTransactions(String uuid) throws WalletException, TransactionException;
 
-	public List<Transaction> viewTransactionsByDate(LocalDate from, LocalDate to, Integer walletId) throws WalletException, TransactionException;
+	public List<Transaction> viewTransactionsByDate(LocalDate from, LocalDate to, String uuid) throws WalletException, TransactionException;
 
-	public List<Transaction> viewAllTransactionsByType(String type, Integer walletId)
+	public List<Transaction> viewAllTransactionsByType(String type, String uuid)
 			throws WalletException, TransactionException;
 
 }

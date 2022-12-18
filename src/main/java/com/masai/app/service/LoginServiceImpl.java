@@ -46,9 +46,9 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public String LogoutFromAccount(String key) throws LoginException {
+	public String LogoutFromAccount(String uuid) throws LoginException {
 		// Validate token
-		CurrentUserSession cus = sDao.findByUuid(key);
+		CurrentUserSession cus = sDao.findByUuid(uuid);
 		if (cus == null) {
 			throw new LoginException("Invalid operation!");
 		}
@@ -59,9 +59,9 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public String LogoutFromAllAccounts(String key) throws LoginException {
+	public String LogoutFromAllAccounts(String uuid) throws LoginException {
 		// Validate current user token
-		CurrentUserSession cus = sDao.findByUuid(key);
+		CurrentUserSession cus = sDao.findByUuid(uuid);
 		if (cus == null) {
 			throw new LoginException("Access denied!");
 		}

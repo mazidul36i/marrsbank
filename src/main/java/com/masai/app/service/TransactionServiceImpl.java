@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.masai.app.exceptions.TransactionException;
 import com.masai.app.exceptions.WalletException;
+import com.masai.app.model.Customer;
 import com.masai.app.model.Transaction;
 import com.masai.app.model.Wallet;
 import com.masai.app.repository.TransactionDao;
-import com.masai.app.repository.WalletDao;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -20,21 +20,23 @@ public class TransactionServiceImpl implements TransactionService {
 	private TransactionDao transactionDao;
 
 	@Autowired
-	private WalletDao walletDao;
+	private CustomerService customerService;;
 
 	@Override
-	public Transaction addTransaction(Transaction transaction, Integer walletId)
+	public Transaction addTransaction(Transaction transaction, String uuid)
 			throws TransactionException, WalletException {
-		Wallet wallet = walletDao.findById(walletId)
-				.orElseThrow(() -> new WalletException("Wallet doesn't not found!"));
+		Customer customer = customerService.getCustomerByUuid(uuid);
+		Wallet wallet = customer.getWallet();
+
 		transaction.setWallet(wallet);
 		return transactionDao.save(transaction);
 	}
 
 	@Override
-	public List<Transaction> viewAllTransactions(Integer walletId) throws WalletException, TransactionException {
-		Wallet wallet = walletDao.findById(walletId)
-				.orElseThrow(() -> new WalletException("Wallet doesn't not found!"));
+	public List<Transaction> viewAllTransactions(String uuid) throws WalletException, TransactionException {
+		Customer customer = customerService.getCustomerByUuid(uuid);
+
+		Wallet wallet = customer.getWallet();
 		if (wallet.getTransactions() == null || wallet.getTransactions().size() == 0) {
 			throw new TransactionException("No transactions have been made on this wallet yet!");
 		}
@@ -42,10 +44,11 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public List<Transaction> viewTransactionsByDate(LocalDate from, LocalDate to, Integer walletId)
+	public List<Transaction> viewTransactionsByDate(LocalDate from, LocalDate to, String uuid)
 			throws WalletException, TransactionException {
 
-		Wallet wallet = walletDao.findById(walletId).orElseThrow(null);
+		Customer customer = customerService.getCustomerByUuid(uuid);
+		Wallet wallet = customer.getWallet();
 
 		List<Transaction> transactions = wallet.getTransactions().stream().filter(transaction -> {
 			int diff1 = transaction.getTransactionDate().compareTo(from);
@@ -59,10 +62,11 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public List<Transaction> viewAllTransactionsByType(String type, Integer walletId)
+	public List<Transaction> viewAllTransactionsByType(String type, String uuid)
 			throws WalletException, TransactionException {
 
-		Wallet wallet = walletDao.findById(walletId).orElseThrow(() -> new WalletException("Wallet doesn't exists!"));
+		Customer customer = customerService.getCustomerByUuid(uuid);
+		Wallet wallet = customer.getWallet();
 
 		List<Transaction> transactions = wallet.getTransactions().stream()
 				.filter(transaction -> transaction.getTransactionType().toLowerCase().equals(type.toLowerCase()))
