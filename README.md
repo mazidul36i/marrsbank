@@ -9,10 +9,8 @@
 The following Diagram depicts the flow of our Entity Relation Diagram to simplify the work flow.
 <br>
 <br>
-  
-  
-
-![Screenshot (9)](https://user-images.githubusercontent.com/96742231/208314518-c9c6634b-a8e5-400a-a778-3e6ebce7a751.png)
+    
+![MARRSBank](https://user-images.githubusercontent.com/71971788/208382831-dc09caba-21ef-4125-9216-60a707fe182e.svg)
 
 <br>
 <br>
