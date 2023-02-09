@@ -116,11 +116,11 @@ spring.mvc.pathmatch.matching-strategy = ANT_PATH_MATCHER
 <br>
 
 ```
-https://localhost:8888/
+http://localhost:8888/
 ```
 
 ```
-https://localhost:8888/swagger-ui/#
+http://localhost:8888/swagger-ui/#
 ```
 <br>
 <br>
