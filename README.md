@@ -70,9 +70,9 @@ The following Diagram depicts the flow of our Entity Relation Diagram to simplif
 <hr>
 <br>
 
-- User Login authrntication
-- validation for the account number
-- validation for the current user and user identification
+- User Login authentication
+- Validation for the account number
+- Validation for the current user and user identification
 - RESTful API with CURD operations
 - Functional Front End For better user experience
 
@@ -81,6 +81,8 @@ The following Diagram depicts the flow of our Entity Relation Diagram to simplif
 
 # Installation & Run
 <hr>
+'application.properties' file with default configuration
+
 <br>
 <br>
 
@@ -103,7 +105,6 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
 spring.mvc.pathmatch.matching-strategy = ANT_PATH_MATCHER
-
 ```
 
 <br>
